@@ -1,0 +1,501 @@
+<!DOCTYPE HTML>
+<html lang="es" class="light" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>El lenguaje de programación Java</title>
+        <meta name="robots" content="noindex">
+
+
+        <!-- Custom HTML head -->
+        
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="favicon.svg">
+        <link rel="shortcut icon" href="favicon.png">
+        <link rel="stylesheet" href="css/variables.css">
+        <link rel="stylesheet" href="css/general.css">
+        <link rel="stylesheet" href="css/chrome.css">
+        <link rel="stylesheet" href="css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" href="highlight.css">
+        <link rel="stylesheet" href="tomorrow-night.css">
+        <link rel="stylesheet" href="ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+
+    </head>
+    <body class="sidebar-visible no-js">
+    <div id="body-container">
+        <!-- Provide site root to javascript -->
+        <script>
+            var path_to_root = "";
+            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "light";
+        </script>
+
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            var html = document.querySelector('html');
+            html.classList.remove('light')
+            html.classList.add(theme);
+            var body = document.querySelector('body');
+            body.classList.remove('no-js')
+            body.classList.add('js');
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            var body = document.querySelector('body');
+            var sidebar = null;
+            var sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+            }
+            sidebar_toggle.checked = sidebar === 'visible';
+            body.classList.remove('sidebar-visible');
+            body.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <div class="sidebar-scrollbox">
+                <ol class="chapter"><li class="chapter-item expanded affix "><a href="title-page.html">El Lenguaje de Programación Java</a></li><li class="chapter-item expanded affix "><a href="foreword.html">Prefacio</a></li><li class="chapter-item expanded affix "><a href="ch00-00-introduction.html">Introducción</a></li><li class="chapter-item expanded "><a href="ch01-00-getting-started.html"><strong aria-hidden="true">1.</strong> Empezando</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="ch01-01-installation.html"><strong aria-hidden="true">1.1.</strong> Instalación</a></li><li class="chapter-item expanded "><a href="ch01-02-hello-world.html"><strong aria-hidden="true">1.2.</strong> ¡Hola, Mundo!</a></li></ol></li><li class="chapter-item expanded "><a href="ch02-00-guessing-game-tutorial.html"><strong aria-hidden="true">2.</strong> Programando un Juego en Java</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="ch02-01-creation-project.html"><strong aria-hidden="true">2.1.</strong> Creación de Proyecto</a></li><li class="chapter-item expanded "><a href="ch02-02-creation-game.html"><strong aria-hidden="true">2.2.</strong> Creación de Juego</a></li></ol></li></ol>
+            </div>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <!-- Track and set sidebar scroll position -->
+        <script>
+            var sidebarScrollbox = document.querySelector('#sidebar .sidebar-scrollbox');
+            sidebarScrollbox.addEventListener('click', function(e) {
+                if (e.target.tagName === 'A') {
+                    sessionStorage.setItem('sidebar-scroll', sidebarScrollbox.scrollTop);
+                }
+            }, { passive: true });
+            var sidebarScrollTop = sessionStorage.getItem('sidebar-scroll');
+            sessionStorage.removeItem('sidebar-scroll');
+            if (sidebarScrollTop) {
+                // preserve sidebar scroll position when navigating via links within sidebar
+                sidebarScrollbox.scrollTop = sidebarScrollTop;
+            } else {
+                // scroll sidebar to current active section when navigating via "next/previous chapter" buttons
+                var activeSection = document.querySelector('#sidebar .active');
+                if (activeSection) {
+                    activeSection.scrollIntoView({ block: 'center' });
+                }
+            }
+        </script>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">El lenguaje de programación Java</h1>
+
+                    <div class="right-buttons">
+                        <a href="print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1 id="el-lenguaje-de-programación-java"><a class="header" href="#el-lenguaje-de-programación-java">El Lenguaje de Programación Java</a></h1>
+<p>Esta documentación refleja mi proceso de aprendizaje en Java. No pretende ser una guía definitiva; más bien, sirve como un registro de mis avances y descubrimientos a lo largo del camino.</p>
+<p>Considero que, para lenguajes de programación completos como Java, es fundamental contar con una documentación clara y accesible, algo que, en mi búsqueda, no encontré en ningún lugar. Mi inspiración proviene de la documentación de Rust, que se caracteriza por su claridad y estructura bien organizada. Puedes encontrar esa documentación en <a href="https://book.rustlang-es.org/">Rustlang</a>.</p>
+<p>A través de esta guía, espero proporcionar un recurso sencillo y directo que pueda ayudar a otros que, como yo, estén comenzando su aventura en el mundo de Java.</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="prefacio"><a class="header" href="#prefacio">Prefacio</a></h1>
+<p>Este documento es una recopilación de notas personales sobre mi aprendizaje en Java. No tiene la intención de ser una guía definitiva ni una referencia oficial, sino un espacio donde registro mis avances, descubrimientos y lecciones aprendidas. Está inspirado en la estructura del libro <a href="https://book.rustlang-es.org/">Rust Programming Language</a>, aplicando conceptos similares para organizar y profundizar mi entendimiento de Java.</p>
+<p>El contenido evolucionará a medida que adquiera más experiencia, por lo que algunos aspectos pueden cambiar o ampliarse con el tiempo. Espero que este ejercicio no solo me ayude a mejorar, sino que también sirva como punto de partida para otros que busquen aprender de manera autodidacta.</p>
+<p>Al tener como punto de partida 2024, Muchas de las cosas se van a basar a como se estructura actualmente el lenguaje pero</p>
+<div style="break-before: page; page-break-before: always;"></div><h2 id="introducción"><a class="header" href="#introducción">Introducción</a></h2>
+<h3 id="a-quién-va-dirigido"><a class="header" href="#a-quién-va-dirigido">¿A quién va dirigido?</a></h3>
+<p>Este material está dirigido a personas sin conocimientos previos de programación en general y de Java en particular. Utilizaremos una jerga sencilla y nos aseguraremos de explicar los términos más complejos de manera clara y accesible.</p>
+<h3 id="por-qué-elegir-java"><a class="header" href="#por-qué-elegir-java">¿Por qué elegir Java?</a></h3>
+<p>Java es un lenguaje de programación ampliamente utilizado y versátil. A continuación, se presentan algunas razones para considerar Java:</p>
+<ul>
+<li>
+<p><strong>Facilidad de Aprendizaje</strong>: Java tiene una sintaxis clara y sencilla que lo convierte en un excelente lenguaje para principiantes. Su enfoque en la legibilidad facilita la comprensión del código.</p>
+</li>
+<li>
+<p><strong>Orientado a Objetos</strong>: Java es un lenguaje de programación orientado a objetos, lo que permite organizar el código en clases y objetos, facilitando la reutilización y el mantenimiento del código.</p>
+</li>
+<li>
+<p><strong>Amplia Comunidad y Recursos</strong>: Java cuenta con una gran comunidad de desarrolladores, lo que significa que hay una abundancia de recursos, tutoriales, y foros disponibles para obtener ayuda y aprender.</p>
+</li>
+<li>
+<p><strong>Versatilidad y Plataforma Independiente</strong>: Los programas Java pueden ejecutarse en diferentes plataformas gracias a la máquina virtual de Java (JVM). Esto significa que puedes desarrollar una aplicación una vez y ejecutarla en cualquier sistema operativo que tenga una JVM.</p>
+</li>
+<li>
+<p><strong>Oportunidades Laborales</strong>: Java es uno de los lenguajes más demandados en la industria del software. Aprender Java puede abrir puertas a diversas oportunidades laborales en empresas de tecnología, desarrollo de software, y más.</p>
+</li>
+<li>
+<p><strong>Uso en el Mundo Real</strong>: Java se utiliza en una variedad de aplicaciones, desde el desarrollo de aplicaciones web y móviles hasta sistemas empresariales. Aprender Java te brinda habilidades prácticas que puedes aplicar en proyectos reales.</p>
+</li>
+</ul>
+<h3 id="conclusión"><a class="header" href="#conclusión">Conclusión</a></h3>
+<p>Elegir Java como tu primer lenguaje de programación es una decisión acertada. No solo te proporciona una base sólida en programación, sino que también te abre las puertas a un mundo de oportunidades en el ámbito tecnológico.</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="empezando"><a class="header" href="#empezando">Empezando</a></h1>
+<p>Empezando
+¡Empecemos el viaje!</p>
+<ol>
+<li><strong>Instalación de Entornos de Desarrollo, JRE y JDK</strong>: Aprende a configurar tu entorno para desarrollar y ejecutar aplicaciones Java.</li>
+<li><strong>Escribir un programa que imprima "Hola, mundo!"</strong>: Tu primer programa, una práctica esencial para familiarizarte con la sintaxis de Java.</li>
+<li><strong>Uso de <code>javac</code></strong>: Conoce cómo utilizar el compilador de Java y el administrador de paquetes para gestionar tus proyectos de forma efectiva.</li>
+</ol>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="instalación"><a class="header" href="#instalación">Instalación</a></h1>
+<p>El primer paso es instalar un entorno de desarrollo. Entre las opciones disponibles, existen diferentes herramientas que los programadores pueden elegir según sus preferencias. En los rankings de 2024, algunas de las herramientas más destacadas incluyen:</p>
+<ul>
+<li><strong><a href="https://www.jetbrains.com/idea/">IntelliJ IDEA</a></strong>: El más popular y utilizado, con versiones gratuita (Community) y de pago (Ultimate).</li>
+<li><strong><a href="https://eclipseide.org/">Eclipse</a></strong>: Conocido por su extensibilidad y personalización.</li>
+<li><strong><a href="https://code.visualstudio.com/docs/languages/java">Visual Studio Code</a></strong>: Ligero y potente, con extensiones para Java.</li>
+</ul>
+<p>Estas opciones ofrecen diversas características, adaptándose a las necesidades de cada desarrollador.</p>
+<p>Al tratar con distintos sistemas operativos, cada máquina presenta métodos específicos para instalar el SDK según sus requisitos. Por ejemplo, recomiendo seguir el tutorial de <strong>Visual Studio Code (VSC)</strong>, ya que este tiene su propio instalador que facilita el proceso.</p>
+<p>Los pasos generales para la instalación son:</p>
+<ol>
+<li><strong>Descargar el instalador</strong>: Visita la página oficial de VSC y descarga la versión adecuada para tu sistema operativo.</li>
+<li><strong>Ejecutar el instalador</strong>: Sigue las instrucciones del asistente de instalación.</li>
+<li><strong>Configurar el PATH</strong>: En cada distribución, es importante asegurarse de que la ruta de instalación del SDK esté correctamente configurada en las variables de entorno.</li>
+</ol>
+<p>Personalmente, en mi experiencia con <strong>Linux Fedora</strong>, el instalador de VSC funcionó muy bien y facilitó la configuración del entorno de desarrollo. Si estás en una distribución diferente, es recomendable revisar la documentación específica para ajustar los pasos según sea necesario.</p>
+<p>Para más detalles sobre la instalación en diferentes sistemas operativos, consulta la <a href="https://code.visualstudio.com/docs/languages/java">documentación oficial de Visual Studio Code</a>.</p>
+<h1 id="resumen-sobre-jre-y-jdk"><a class="header" href="#resumen-sobre-jre-y-jdk">Resumen sobre JRE y JDK</a></h1>
+<h2 id="jdk-java-development-kit"><a class="header" href="#jdk-java-development-kit">JDK (Java Development Kit)</a></h2>
+<p>El <strong>JDK</strong> es un conjunto de herramientas y bibliotecas que permiten a los desarrolladores crear aplicaciones en Java. Incluye todo lo necesario para desarrollar, compilar y depurar programas Java.</p>
+<h3 id="componentes-del-jdk"><a class="header" href="#componentes-del-jdk">Componentes del JDK:</a></h3>
+<ul>
+<li><strong>Compilador (<code>javac</code>)</strong>: Transforma el código fuente Java en bytecode.</li>
+<li><strong>Herramientas de desarrollo</strong>: Incluye depuradores y otros utilitarios.</li>
+<li><strong>JRE</strong>: El entorno de ejecución necesario para ejecutar aplicaciones Java.</li>
+</ul>
+<h2 id="jre-java-runtime-environment"><a class="header" href="#jre-java-runtime-environment">JRE (Java Runtime Environment)</a></h2>
+<p>El <strong>JRE</strong> es el entorno que permite ejecutar aplicaciones Java. Incluye la <strong>JVM (Java Virtual Machine)</strong>, que es responsable de ejecutar el bytecode Java, y las bibliotecas de clases necesarias para su funcionamiento.</p>
+<h3 id="importancia-del-jre"><a class="header" href="#importancia-del-jre">Importancia del JRE:</a></h3>
+<ul>
+<li>Permite la ejecución de aplicaciones Java en cualquier plataforma que tenga instalado el JRE.</li>
+<li>Viene incluido en el JDK, lo que facilita a los desarrolladores tanto la creación como la ejecución de sus aplicaciones.</li>
+</ul>
+<h3 id="conclusión-1"><a class="header" href="#conclusión-1">Conclusión</a></h3>
+<p>Al instalar el JDK, también se instala automáticamente el JRE, proporcionando un entorno completo para el desarrollo y la ejecución de aplicaciones Java.</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="hola-mundo"><a class="header" href="#hola-mundo">¡Hola, Mundo!</a></h1>
+<p>Ahora que has instalado Java, es hora de escribir tu primer programa. Es tradicional cuando se aprende un nuevo lenguaje escribir un pequeño programa que imprima el texto ¡Hola, mundo! en la pantalla, ¡así que haremos lo mismo aquí!</p>
+<h2 id="creando-un-directorio-de-proyecto"><a class="header" href="#creando-un-directorio-de-proyecto">Creando un directorio de proyecto</a></h2>
+<p>Para comenzar a trabajar en Java, es fundamental organizar tus proyectos de manera efectiva. A continuación, aprenderás a crear un directorio específico para tus ejercicios y proyectos.</p>
+<h3 id="paso-1-crear-un-directorio-de-proyectos"><a class="header" href="#paso-1-crear-un-directorio-de-proyectos">Paso 1: Crear un directorio de proyectos</a></h3>
+<p>Utilizaremos el directorio <code>proyectos</code> en tu directorio de inicio para mantener todos tus proyectos organizados. Esto te ayudará a acceder a ellos fácilmente y a mantener un entorno de trabajo limpio.</p>
+<h3 id="paso-2-abrir-la-terminal"><a class="header" href="#paso-2-abrir-la-terminal">Paso 2: Abrir la terminal</a></h3>
+<p>Abre una terminal en tu sistema. Puedes hacerlo buscando "Terminal" en el menú de aplicaciones de tu sistema operativo o usando el atajo de teclado correspondiente.</p>
+<h3 id="paso-3-crear-el-directorio"><a class="header" href="#paso-3-crear-el-directorio">Paso 3: Crear el directorio</a></h3>
+<p>En la terminal, escribe los siguientes comandos para crear el directorio <code>proyectos</code> y, dentro de él, un directorio para tu primer proyecto, que será “¡Hola, mundo!”:</p>
+<pre><code class="language-bash">mkdir ~/Desktop/proyectos
+mkdir ~/Desktop/proyectos/hola-mundo
+
+cd ~/Desktop/proyectos/hola-mundo
+</code></pre>
+<h3 id="paso-4"><a class="header" href="#paso-4">Paso 4</a></h3>
+<p>Escribir y ejecutar un programa.</p>
+<p>A continuación, crea un nuevo archivo de texto y llámalo HolaMundo.java. Los archivos Java siempre terminan con la extensión .java. Si estás usando más de una palabra en tu nombre de archivo, la convención es utilizar CamelCase, es decir, cada palabra comienza con una letra mayúscula y no se utilizan guiones bajos. Por ejemplo, usa HolaMundo.java en lugar de hola_mundo.java.</p>
+<p>Ahora abre el archivo HolaMundo.java que acabas de crear y escribe el código en el Listado 1-1.</p>
+<pre><code class="language-java">public class HolaMundo {
+    public static void main(String[] args) {
+        System.out.println("Hola, mundo!");
+    }
+}
+</code></pre>
+<p>Guarda el archivo y vuelve a la ventana de la terminal en el directorio</p>
+<pre><code class="language-console">$ javac HolaMundo.java
+$ java HolaMundo
+¡Hola, mundo!
+</code></pre>
+<p>Si <code>¡Hola, mundo!</code> se imprimió, ¡felicidades! Acabas de escribir oficialmente un programa en Java. Eso te convierte en un programador de Java, ¡bienvenido!</p>
+<blockquote>
+<p><strong>Nota</strong>: En las versiones más recientes de Java, específicamente desde <strong>Java 11</strong>, no es necesario compilar explícitamente a un archivo <code>.class</code> antes de ejecutar el programa. Puedes ejecutar archivos <code>.java</code>, por eso al ejecutar en aplicaciones como vsc directamente compila y entrega el proyecto final, puedes probar utilizando directamente utilizando el siguiente comando:</p>
+</blockquote>
+<pre><code class="language-bash">java NombreDelArchivo.java
+</code></pre>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="programando-un-juego-en-java"><a class="header" href="#programando-un-juego-en-java">Programando un Juego en Java</a></h1>
+<p>Vamos a crear un juego de trivia en Java donde el jugador debe responder una serie de preguntas de opción múltiple. El programa mostrará las preguntas, las opciones, y evaluará si las respuestas son correctas, otorgando puntos por cada acierto.</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="creación-de-proyecto"><a class="header" href="#creación-de-proyecto">Creación de Proyecto</a></h1>
+<h2 id="creación-de-proyecto-1"><a class="header" href="#creación-de-proyecto-1">Creación de Proyecto</a></h2>
+<h3 id="por-qué-hay-que-crear-un-proyecto-en-java"><a class="header" href="#por-qué-hay-que-crear-un-proyecto-en-java">¿Por qué hay que crear un proyecto en Java?</a></h3>
+<p>Crear un proyecto en Java es fundamental para organizar y gestionar el código de manera eficiente. Esto se debe a que Java es un lenguaje orientado a objetos que fomenta la modularidad y la reutilización del código. A continuación, se presentan algunas ventajas de crear un proyecto en Java:</p>
+<h3 id="ventajas-a-la-hora-de"><a class="header" href="#ventajas-a-la-hora-de">Ventajas a la hora de:</a></h3>
+<ol>
+<li>
+<p><strong>Organización del Código</strong><br />
+La creación de un proyecto ayuda a mantener una estructura clara y organizada, separando diferentes módulos, clases y recursos. Esto facilita la navegación y el mantenimiento del código a lo largo del tiempo.</p>
+</li>
+<li>
+<p><strong>Colaboración en Equipo</strong><br />
+Un proyecto bien definido permite que múltiples desarrolladores trabajen simultáneamente en diferentes partes del código. Al utilizar herramientas de control de versiones como Git, es más fácil gestionar los cambios y resolver conflictos.</p>
+</li>
+<li>
+<p><strong>Configuración del Entorno de Desarrollo</strong><br />
+Crear un proyecto permite establecer configuraciones específicas para el entorno de desarrollo, incluyendo dependencias y bibliotecas necesarias para la aplicación, lo que asegura que todos los desarrolladores trabajen en un entorno uniforme.</p>
+</li>
+<li>
+<p><strong>Facilidad de Compilación y Ejecución</strong><br />
+Las herramientas de construcción, como Maven o Gradle, se integran fácilmente en un proyecto, facilitando la compilación, ejecución y empaquetado del código. Esto reduce los errores y ahorra tiempo en la gestión del ciclo de vida del desarrollo.</p>
+</li>
+<li>
+<p><strong>Pruebas y Depuración</strong><br />
+Los proyectos Java suelen incluir configuraciones para pruebas automatizadas. Esto permite realizar pruebas unitarias y de integración de manera eficiente, asegurando que el código funcione como se espera antes de su despliegue.</p>
+</li>
+<li>
+<p><strong>Escalabilidad y Mantenimiento</strong><br />
+Un proyecto bien estructurado es más fácil de escalar y mantener. Con una arquitectura clara, es sencillo agregar nuevas funcionalidades o realizar cambios sin afectar el resto del código.</p>
+</li>
+</ol>
+<h3 id="conclusión-2"><a class="header" href="#conclusión-2">Conclusión</a></h3>
+<p>En resumen, la creación de un proyecto en Java no solo facilita la organización y gestión del código, sino que también promueve buenas prácticas de desarrollo, mejora la colaboración en equipo y optimiza el ciclo de vida del desarrollo de software.</p>
+<h3 id="cómo-crear-un-proyecto-en-java"><a class="header" href="#cómo-crear-un-proyecto-en-java">¿Cómo crear un proyecto en Java?</a></h3>
+<p>Las herramientas como Eclipse e IntelliJ tienen características robustas para la creación y gestión de proyectos Java. Sin embargo, Visual Studio Code también ofrece una forma sencilla de crear proyectos Java utilizando extensiones.</p>
+<h4 id="1-instalar-extensiones-necesarias"><a class="header" href="#1-instalar-extensiones-necesarias">1. <strong>Instalar Extensiones Necesarias</strong></a></h4>
+<p>Antes de crear un proyecto de Java en Visual Studio Code, asegúrate de tener instaladas las extensiones necesarias:</p>
+<ul>
+<li><strong>Java Extension Pack</strong>: Este paquete incluye las extensiones más importantes para desarrollar en Java, como Language Support for Java(TM) by Red Hat, Java Debugger y Maven for Java.</li>
+</ul>
+<p>Para instalarlo:</p>
+<ol>
+<li>Abre Visual Studio Code.</li>
+<li>Ve a la vista de extensiones (puedes usar el atajo <code>Ctrl + Shift + X</code>).</li>
+<li>Busca "Java Extension Pack" e instálalo.</li>
+</ol>
+<h4 id="2-crear-un-nuevo-proyecto-java"><a class="header" href="#2-crear-un-nuevo-proyecto-java">2. <strong>Crear un Nuevo Proyecto Java</strong></a></h4>
+<p>Una vez que tengas las extensiones instaladas, sigue estos pasos para crear un nuevo proyecto:</p>
+<ol>
+<li>
+<p><strong>Abre la Paleta de Comandos</strong>:</p>
+<ul>
+<li>Presiona <code>Ctrl + Shift + P</code> para abrir la paleta de comandos.</li>
+</ul>
+</li>
+<li>
+<p><strong>Buscar Comando para Crear Proyecto</strong>:</p>
+<ul>
+<li>Escribe <code>Java: Create Java Project</code> y selecciona la opción cuando aparezca.</li>
+</ul>
+</li>
+<li>
+<p><strong>Elegir Tipo de Proyecto</strong>:</p>
+<ul>
+<li>Se te pedirá que elijas un tipo de proyecto. Puedes elegir entre varias opciones, como un proyecto básico o un proyecto Maven.</li>
+</ul>
+</li>
+<li>
+<p><strong>Seleccionar Ubicación del Proyecto</strong>:</p>
+<ul>
+<li>Después de seleccionar el tipo de proyecto, elige una ubicación en tu sistema donde deseas crear el proyecto.</li>
+</ul>
+</li>
+<li>
+<p><strong>Nombrar el Proyecto</strong>:</p>
+<ul>
+<li>Asigna un nombre a tu proyecto. Esto creará una carpeta con ese nombre y generará la estructura de archivos necesarios para un proyecto Java.</li>
+</ul>
+</li>
+<li>
+<p><strong>Abrir Proyecto</strong>:</p>
+<ul>
+<li>Una vez creado, el proyecto se abrirá automáticamente en Visual Studio Code, y podrás ver la estructura de carpetas en la barra lateral.</li>
+</ul>
+</li>
+</ol>
+<h4 id="3-ejecutar-el-proyecto-java"><a class="header" href="#3-ejecutar-el-proyecto-java">3. <strong>Ejecutar el Proyecto Java</strong></a></h4>
+<p>Después de crear tu proyecto y agregar tu código Java, puedes compilar y ejecutar tu programa:</p>
+<ul>
+<li>
+<p><strong>Compilar</strong>: Abre el archivo <code>.java</code> que deseas compilar y usa el botón de "Run" que aparece en la parte superior derecha del editor o usa <code>Ctrl + F5</code> para ejecutar sin depuración.</p>
+</li>
+<li>
+<p><strong>Ejecutar</strong>: Puedes ejecutar tu aplicación usando el mismo botón o <code>F5</code> si deseas iniciar la depuración.</p>
+</li>
+</ul>
+<h4 id="ventajas-de-usar-visual-studio-code-para-proyectos-java"><a class="header" href="#ventajas-de-usar-visual-studio-code-para-proyectos-java">Ventajas de Usar Visual Studio Code para Proyectos Java</a></h4>
+<ul>
+<li><strong>Ligero y Rápido</strong>: VS Code es un editor ligero que se inicia rápidamente.</li>
+<li><strong>Personalizable</strong>: Puedes personalizar tu entorno con una amplia variedad de extensiones.</li>
+<li><strong>Interfaz Amigable</strong>: Ofrece una interfaz sencilla para navegar y gestionar archivos.</li>
+<li><strong>Integración de Git</strong>: Soporte incorporado para el control de versiones con Git.</li>
+</ul>
+<h3 id="conclusión-3"><a class="header" href="#conclusión-3">Conclusión</a></h3>
+<p>Usar Visual Studio Code para crear proyectos de Java es una forma eficiente y flexible de trabajar en tus aplicaciones. Con las extensiones adecuadas, puedes aprovechar todas las características de un IDE completo mientras disfrutas de la ligereza y rapidez de VS Code.</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="creación-de-juego"><a class="header" href="#creación-de-juego">Creación de Juego</a></h1>
+<p>Primero, crea un proyecto y crea un  archivo llamado <code>JuegoDeTrivia.java</code> en tu carpeta src/ o en tu App principal editor de texto y añade el siguiente código:</p>
+<pre><code class="language-java">import java.util.HashMap;
+import java.util.Map;
+import java.util.Scanner;
+
+public class JuegoDeTrivia {
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+        Map&lt;String, String[]&gt; preguntas = new HashMap&lt;&gt;();
+        Map&lt;String, String&gt; respuestasCorrectas = new HashMap&lt;&gt;();
+        int puntaje = 0;
+
+        preguntas.put("¿Cuál es la capital de Francia?", new String[]{"a) París", "b) Londres", "c) Berlín", "d) Roma"});
+        preguntas.put("¿Qué planeta es conocido como el planeta rojo?", new String[]{"a) Venus", "b) Marte", "c) Júpiter", "d) Saturno"});
+        preguntas.put("¿Quién escribió 'Cien años de soledad'?", new String[]{"a) Julio Cortázar", "b) Jorge Luis Borges", "c) Gabriel García Márquez", "d) Mario Vargas Llosa"});
+        preguntas.put("¿Cuál es el océano más grande?", new String[]{"a) Océano Atlántico", "b) Océano Índico", "c) Océano Ártico", "d) Océano Pacífico"});
+
+        respuestasCorrectas.put("¿Cuál es la capital de Francia?", "a");
+        respuestasCorrectas.put("¿Qué planeta es conocido como el planeta rojo?", "b");
+        respuestasCorrectas.put("¿Quién escribió 'Cien años de soledad'?", "c");
+        respuestasCorrectas.put("¿Cuál es el océano más grande?", "d");
+
+        System.out.println("¡Bienvenido al Juego de Trivia!");
+        System.out.println("Responde las siguientes preguntas:");
+
+        for (Map.Entry&lt;String, String[]&gt; entry : preguntas.entrySet()) {
+            String pregunta = entry.getKey();
+            String[] opciones = entry.getValue();
+            String respuestaCorrecta = respuestasCorrectas.get(pregunta);
+
+            System.out.println(pregunta);
+            for (String opcion : opciones) {
+                System.out.println(opcion);
+            }
+
+            System.out.print("Tu respuesta (a/b/c/d): ");
+            String respuestaUsuario = scanner.nextLine().toLowerCase();
+
+            if (respuestaUsuario.equals(respuestaCorrecta)) {
+                System.out.println("¡Correcto! La respuesta es " + opciones[respuestaCorrecta.charAt(0) - 'a'] + ".");
+                puntaje++;
+            } else {
+                System.out.println("Incorrecto. La respuesta correcta es " + opciones[respuestaCorrecta.charAt(0) - 'a'] + ".");
+            }
+            System.out.println();
+        }
+
+        System.out.println("Juego terminado. Tu puntaje final es: " + puntaje + "/" + preguntas.size());
+        scanner.close();
+    }
+}
+</code></pre>
+<p>Como viste en el Capítulo 1, <code>javac</code> genera un archivo llamado <code>HolaMundo.class</code>, que es el bytecode del proyecto. Después de esto, el comando <code>java HolaMundo</code> se utiliza como ejecutor del programa para correr el bytecode, que es el proyecto multiplataforma.</p>
+<blockquote>
+<p><strong>Nota</strong>: En el Capítulo 1 también se advierte que, en las versiones más recientes de Java, específicamente desde <strong>Java 11</strong>, no es necesario compilar explícitamente a un archivo <code>.class</code> antes de ejecutar el programa. Puedes ejecutar archivos <code>.java</code> directamente utilizando el siguiente comando:</p>
+</blockquote>
+<pre><code class="language-bash">java JuegoDeTrivia.java
+</code></pre>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+
+            </nav>
+
+        </div>
+
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="elasticlunr.min.js"></script>
+        <script src="mark.min.js"></script>
+        <script src="searcher.js"></script>
+
+        <script src="clipboard.min.js"></script>
+        <script src="highlight.js"></script>
+        <script src="book.js"></script>
+
+        <!-- Custom JS scripts -->
+
+        <script>
+        window.addEventListener('load', function() {
+            window.setTimeout(window.print, 100);
+        });
+        </script>
+
+    </div>
+    </body>
+</html>
